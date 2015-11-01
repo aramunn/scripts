@@ -57,6 +57,11 @@ echo "New in $version: $changes" > CHANGES.txt
 echo "$version: $changes" > tmp.txt
 cat CHANGELOG.txt >> tmp.txt
 mv tmp.txt CHANGELOG.txt
+#convert line endings
+perl -p -e 's/[\r\n]+/\r\n/' < CHANGES.txt > tmp.txt
+mv tmp.txt CHANGES.txt
+perl -p -e 's/[\r\n]+/\r\n/' < CHANGELOG.txt > tmp.txt
+mv tmp.txt CHANGELOG.txt
 echo "Updated change logs"
 pause
 
