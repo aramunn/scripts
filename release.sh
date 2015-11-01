@@ -40,9 +40,9 @@ read -p "Release version: " version
 read -p "[A]lpha or [B]eta? " prerelease
 shopt -s nocasematch
 case "$prerelease" in
-  "A" ) version="${version}-alpha"; prerelease="-d prerelease=true" ;;
-  "B" ) version="${version}-beta" ; prerelease="-d prerelease=true" ;;
-  * )   prerelease="" ;;
+  "A" ) version="${version}-alpha"; prerelease="true" ;;
+  "B" ) version="${version}-beta" ; prerelease="true" ;;
+  * )   prerelease="false" ;;
 esac
 
 #display obtained values
@@ -95,7 +95,7 @@ echo "Prerelease: $prerelease"
 echo "Tag: $version"
 echo "Name: $changes"
 pause
-#curl -d "tag_name=$version" -d "name=$changes" $prerelease "https://api.github.com/repos/$user/$repo/releases"
+curl --user $user --data "{\"tag_name\":\"$version\",\"name\":\"$changes\",\"prerelease\":$prerelease}" https://api.github.com/repos/$user/$repo/releases
 
 #done
 echo "Release complete!"
