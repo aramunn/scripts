@@ -9,13 +9,12 @@ pause() { read -p "Press Enter to continue..."; echo; }
 #get repo and user names from current dir
 repo=${PWD##*/}
 cd ..; user=${PWD##*/}; cd $repo
-echo "User: $user"
-echo "Repo: $repo"
-echo "Working dir: $PWD"
-pause
 
 #display script notes
 echo "Running release script. Ctrl+C to quit at any time."
+echo "User: $user"
+echo "Repo: $repo"
+echo "Working dir: $PWD"
 pause
 
 #check status and branch
