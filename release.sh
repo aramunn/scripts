@@ -87,6 +87,9 @@ echo "Push tag"
 git push --tags
 pause
 
+#get long description
+read -p "Verbose description: " description
+
 #send release POST
 echo "Prepared to send release POST"
 echo "User: $user"
@@ -94,8 +97,9 @@ echo "Repo: $repo"
 echo "Prerelease: $prerelease"
 echo "Tag: $version"
 echo "Name: $changes"
+echo "Description: $description"
 pause
-curl --user $user --data "{\"tag_name\":\"$version\",\"name\":\"$changes\",\"prerelease\":$prerelease}" https://api.github.com/repos/$user/$repo/releases
+curl --user $user --data "{\"tag_name\":\"$version\",\"name\":\"$changes\",\"body\":\"$description\",\"prerelease\":$prerelease}" https://api.github.com/repos/$user/$repo/releases
 
 #done
 echo "Release complete!"
