@@ -52,17 +52,24 @@ echo "Changes: $changes"
 pause
 
 #make changes.txt
-echo "New in $version: $changes" > CHANGES.txt
+echo "New in $version: $changes" > tmp.txt
+cat CHANGES.txt >> tmp.txt
+mv tmp.txt CHANGES.txt
+echo "Make edits to changes if needed"
+pause
+vim CHANGES.txt
+
 #add to changelog.txt
 echo "$version: $changes" > tmp.txt
 cat CHANGELOG.txt >> tmp.txt
 mv tmp.txt CHANGELOG.txt
+
 #convert line endings
 perl -p -e 's/[\r\n]+/\r\n/' < CHANGES.txt > tmp.txt
 mv tmp.txt CHANGES.txt
 perl -p -e 's/[\r\n]+/\r\n/' < CHANGELOG.txt > tmp.txt
 mv tmp.txt CHANGELOG.txt
-echo "Updated change logs"
+echo "Updated change logs EOL's"
 pause
 
 #display changes
