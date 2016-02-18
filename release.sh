@@ -7,14 +7,13 @@ set -u #error on unset var usage
 pause() { read -p "Press Enter to continue..."; echo; }
 
 #get repo and user names from current dir
-repo=${PWD##*/}
-cd ..; user=${PWD##*/}; cd $repo
+repo="$(basename "$(git rev-parse --show-toplevel)")"
+user="$(git config user.name)"
 
 #display script notes
 echo "Running release script. Ctrl+C to quit at any time."
 echo "User: $user"
 echo "Repo: $repo"
-echo "Working dir: $PWD"
 pause
 
 #check status and branch
@@ -25,11 +24,16 @@ pause
 #ask for previous release
 git tag
 read -p "Previous release: " previous
-#run git difftool
-echo "Running difftool against $previous"
-pause
-git difftool $previous
-echo "Done"
+#skip if first release
+if [ "$previous" = "" ]; then
+  echo "Skipping version diff"
+else
+  #run git difftool
+  echo "Running difftool against $previous"
+  pause
+  git difftool $previous
+  echo "Done"
+fi
 pause
 
 #ask for change summary
@@ -52,6 +56,7 @@ echo "Changes: $changes"
 pause
 
 #make changes.txt
+touch CHANGES.txt
 echo "New in $version: $changes" > tmp.txt
 cat CHANGES.txt >> tmp.txt
 mv tmp.txt CHANGES.txt
@@ -60,6 +65,7 @@ pause
 vim CHANGES.txt
 
 #add to changelog.txt
+touch CHANGELOG.txt
 echo "$version: $changes" > tmp.txt
 cat CHANGELOG.txt >> tmp.txt
 mv tmp.txt CHANGELOG.txt
@@ -71,6 +77,9 @@ perl -p -e 's/[\r\n]+/\r\n/' < CHANGELOG.txt > tmp.txt
 mv tmp.txt CHANGELOG.txt
 echo "Updated change logs EOL's"
 pause
+
+#add change files
+git add -N CHANGES.txt CHANGELOG.txt
 
 #display changes
 git status
