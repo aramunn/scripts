@@ -3,6 +3,11 @@
 set -e #exit on error
 set -u #error on unset var usage
 
+force=0
+for i in "$@"; do
+  if [ "$i" == "-f" ]; then force=1; fi
+done
+
 #wait for ok before continuing
 pause() { read -p "Press Enter to continue..."; echo; }
 
@@ -16,13 +21,10 @@ dir="$APPDATA/NCSOFT/WildStar/addons/$name"
 files=( *.{lua,xml} )
 
 #double check dir is correct
-if [ -z ${TMPIGNOREINSTALLCHECK+x} ]; then
+if [ "$force" -eq 0 ]; then
   for file in ${files[@]}; do echo "$file"; done
   read -p "Installing the above files to $dir. Is this correct? (y/n): " ans
-  if [ "$ans" = "y" ]; then
-    echo "Use the below command to disable this check."
-    echo "export TMPIGNOREINSTALLCHECK=1"
-  else
+  if [ "$ans" != "y" ]; then
     exit
   fi
 fi
