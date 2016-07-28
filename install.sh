@@ -18,7 +18,7 @@ if [ ! -f "toc.xml" ]; then
 fi
 name="$(perl -e '$s=`cat toc.xml`; $s=~m/Name="(.*?)"/; print "$1\n";')"
 dir="$APPDATA/NCSOFT/WildStar/addons/$name"
-files=( *.{lua,xml} )
+files=`find . -name "*.lua" -o -name "*.xml"`
 
 #double check dir is correct
 if [ "$force" -eq 0 ]; then
@@ -32,7 +32,7 @@ fi
 #install
 echo "installing..."
 if [ ! -d "$dir" ]; then mkdir "$dir"; fi
-for file in ${files[@]}; do cp "$file" "$dir"; done
+for file in ${files[@]}; do cp "$file" "$dir/$file"; done
 
 #done
 echo "done"
