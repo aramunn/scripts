@@ -17,8 +17,8 @@ echo "Repo: $repo"
 pause
 
 #check status and branch
-git status
 echo "Ensure status is ok and we're on the right branch"
+git status
 pause
 
 #ask for previous release
