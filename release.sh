@@ -118,4 +118,5 @@ pause
 curl --user $user --data "{\"tag_name\":\"$version\",\"name\":\"$changes\",\"body\":\"$description\",\"prerelease\":$prerelease}" https://api.github.com/repos/$user/$repo/releases
 
 #done
-echo "Release complete!"
+echo "Release complete! Opening wiki for edit"
+/c/Program\ Files\ \(x86\)/Google/Chrome/Application/chrome.exe https://github.com/$user/$repo/wiki/Home/_edit
