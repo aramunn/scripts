@@ -6,12 +6,17 @@ set -u #error on unset var usage
 #wait for ok before continuing
 pause() { read -p "Press Enter to continue..."; echo; }
 
-#get repo and user names from current dir
+#display script notes
+echo "Running release script. Ctrl+C to quit at any time."
+pause
+
+#get infos from stuff
+title="$(grep -oP "(?<=Name=\")\w+(?=\")" toc.xml)"
 repo="$(basename "$(git rev-parse --show-toplevel)")"
 user="$(git config user.name)"
 
-#display script notes
-echo "Running release script. Ctrl+C to quit at any time."
+#show it
+echo "Title: $title"
 echo "User: $user"
 echo "Repo: $repo"
 pause
@@ -118,5 +123,7 @@ pause
 curl --user $user --data "{\"tag_name\":\"$version\",\"name\":\"$changes\",\"body\":\"$description\",\"prerelease\":$prerelease}" https://api.github.com/repos/$user/$repo/releases
 
 #done
-echo "Release complete! Opening wiki for edit"
-/c/Program\ Files\ \(x86\)/Google/Chrome/Application/chrome.exe https://github.com/$user/$repo/wiki/Home/_edit
+cd /c/Program\ Files\ \(x86\)/Google/Chrome/Application
+echo "Release complete! Opening wiki and project page for editing if needed"
+./chrome.exe https://wildstar.curseforge.com/projects/$title
+./chrome.exe https://github.com/$user/$repo/wiki/Home/_edit
