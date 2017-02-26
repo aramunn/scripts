@@ -81,13 +81,13 @@ if [ ! -d "$dir" ]; then
   fi
 fi
 
-#grab files to install
-files=`find . -name "*.lua" -o -name "*.xml"`
+#make robocopy opts
+opts="//PURGE //E //XF *.yaml *.md //XD .git"
 
 #double check dir is correct
 if [ "$force" -eq 0 ]; then
-  for file in ${files[@]}; do echo "$file"; done
-  read -p "Installing the above files to $dir. Is this correct? (y/n): " ans
+  cmd //c robocopy . "$dir" $opts //L || echo
+  read -p "Is this correct? (y/n): " ans
   if [ "$ans" != "y" ]; then
     exit
   fi
@@ -95,8 +95,7 @@ fi
 
 #install
 echo "installing..."
-if [ ! -d "$dir" ]; then mkdir "$dir"; fi
-for file in ${files[@]}; do cp "$file" "$dir/$file"; done
+cmd //c robocopy . "$dir" $opts || echo
 
 #done
 echo "done"
