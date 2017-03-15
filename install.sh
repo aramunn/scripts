@@ -82,7 +82,7 @@ if [ ! -d "$dir" ]; then
 fi
 
 #make robocopy opts
-opts="//PURGE //E //XF *.yaml *.md //XD .git"
+opts="//PURGE //E //NJS //NJH //NDL //XF *.yaml *.md *.luacheckrc *.gitignore //XD .git"
 
 #double check dir is correct
 if [ "$force" -eq 0 ]; then
